@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">HelloInnoCV</string>
+    <string name="error_conection">Error de conexion</string>
+    <string name="error_ocurred">Ocurrió un error inesperado.</string>
+</resources>
