@@ -4,17 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mrmarapps.helloinnocv.di.activity.DaggerInjectedActivityComponent;
 import com.mrmarapps.helloinnocv.di.activity.InjectedActivity;
 import com.mrmarapps.helloinnocv.di.activity.InjectedActivityComponent;
-import com.mrmarapps.helloinnocv.di.activity.InjectedActivityModule;
-import com.mrmarapps.helloinnocv.di.application.InjectedApplication;
-import com.mrmarapps.helloinnocv.di.application.InjectedApplicationComponent;
 
 
 public abstract class InjectedFragment extends Fragment {
