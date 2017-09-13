@@ -2,4 +2,7 @@
     <string name="app_name">HelloInnoCV</string>
     <string name="error_conection">Error de conexion</string>
     <string name="error_ocurred">Ocurrió un error inesperado.</string>
+    <string name="title_activity_test">test</string>
+    <string name="menu_search">Realizar Busqueda</string>
+    <string name="search_hint">Busqueda de usuarios...</string>
 </resources>
