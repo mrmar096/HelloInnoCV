@@ -3,13 +3,13 @@ package com.mrmarapps.helloinnocv.mainactivity;
 import android.support.v7.widget.Toolbar;
 
 import com.mrmarapps.helloinnocv.R;
-import com.mrmarapps.helloinnocv.di.activity.InjectedActivity;
 import com.mrmarapps.helloinnocv.mvp.ViewActions;
 import com.mrmarapps.helloinnocv.mvp.activity.BaseActivityView;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by mario on 12/09/17.
@@ -31,6 +31,13 @@ public class MainActivityView extends BaseActivityView<MainActivity,MainActivity
         activity.setSupportActionBar(toolbar);
     }
 
+    @OnClick(R.id.fab)
+    public void onAddUser(){
+        actions.onAddUser();
+    }
+
+
+
     @Override
     protected MainActivityView.Actions getDefaultListener() {
         return MainActivityView.Actions.DEFAULT;
@@ -39,6 +46,12 @@ public class MainActivityView extends BaseActivityView<MainActivity,MainActivity
     public interface Actions extends ViewActions {
         Actions DEFAULT = new Actions() {
 
+            @Override
+            public void onAddUser() {
+
+            }
         };
+
+        void onAddUser();
     }
 }

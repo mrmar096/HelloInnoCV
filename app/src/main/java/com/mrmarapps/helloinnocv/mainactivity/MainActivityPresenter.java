@@ -28,7 +28,7 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityVie
 
     @Override
     protected ViewActions getViewActions() {
-        return view.getDefaultListener();
+        return this;
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -58,6 +58,11 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityVie
     public boolean onQueryTextChange(String newText) {
         view.showMessage(newText);
         return true;
+    }
+
+    @Override
+    public void onAddUser() {
+        view.showMessage("ADD USER");
     }
 
     public interface Actions extends PresenterActions {
