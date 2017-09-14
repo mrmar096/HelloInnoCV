@@ -30,7 +30,10 @@ dependencies {
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
     compile group: 'com.google.guava', name: 'guava', version: '20.0'
 
-//    DAGGER
+    compile 'com.mikepenz:fastadapter-extensions:2.6.3@aar'
+    //The tiny Materialize library used for its useful helper classes
+    compile 'com.mikepenz:materialize:1.0.3@aar'
+
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
@@ -44,5 +47,7 @@ dependencies {
     compile 'com.google.dagger:dagger:2.8'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+
+    //DAGGER
     annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
 }

@@ -1,11 +1,6 @@
 package com.mrmarapps.helloinnocv.di.fragment;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
-
-import com.mrmarapps.helloinnocv.di.activity.InjectedActivity;
-import com.mrmarapps.helloinnocv.di.activity.PerActivity;
 
 import dagger.Module;
 import dagger.Provides;
@@ -16,22 +11,22 @@ import dagger.Provides;
 
 @Module
 public class InjectedFragmentModule {
-    protected final InjectedFragment injectedFragment;
+    protected final InjectedFragment fragment;
 
 
     public InjectedFragmentModule(InjectedFragment injectedFragment) {
-        this.injectedFragment = injectedFragment;
+        this.fragment = injectedFragment;
     }
 
     @Provides
     @PerFragment InjectedFragment provideInjectedFragment(){
-        return injectedFragment;
+        return fragment;
     }
 
     @Provides
     @PerFragment
     Context provideContext(){
-        return injectedFragment.getContext();
+        return fragment.getContext();
     }
 
 
