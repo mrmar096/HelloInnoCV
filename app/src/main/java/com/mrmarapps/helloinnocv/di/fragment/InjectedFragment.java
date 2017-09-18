@@ -20,10 +20,6 @@ public abstract class InjectedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        DaggerInjectedFragmentComponent.builder()
-                .injectedFragmentModule(new InjectedFragmentModule(this))
-                .build();
-
         return inflater.inflate(getFragmentLayout(), container, false);
     }
 

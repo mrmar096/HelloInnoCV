@@ -30,6 +30,11 @@ dependencies {
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
     compile group: 'com.google.guava', name: 'guava', version: '20.0'
 
+    //FastAdapter
+    compile('com.mikepenz:fastadapter:2.6.3@aar') {
+        transitive = true
+    }
+    compile 'com.mikepenz:fastadapter-commons:2.6.3@aar'
     compile 'com.mikepenz:fastadapter-extensions:2.6.3@aar'
     //The tiny Materialize library used for its useful helper classes
     compile 'com.mikepenz:materialize:1.0.3@aar'

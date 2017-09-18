@@ -1,5 +1,8 @@
 package com.mrmarapps.helloinnocv.mvp.activity;
 
+import android.support.annotation.IdRes;
+import android.support.v4.app.Fragment;
+
 import com.mrmarapps.helloinnocv.di.activity.InjectedActivity;
 import com.mrmarapps.helloinnocv.mvp.PresenterActions;
 import com.mrmarapps.helloinnocv.mvp.ViewActions;
@@ -28,6 +31,15 @@ public abstract class BaseActivityPresenter<VIEW extends BaseActivityView,ACTIVI
     public void onCreate() {
         view.setViewActionsListener(getViewActions());
         view.onInitView();
+    }
+
+
+    protected void openFragment(@IdRes int idContainer, Fragment fragment) {
+        activity.getSupportFragmentManager()
+                .beginTransaction()
+                .replace(idContainer, fragment)
+                .commitNowAllowingStateLoss();
+
     }
 
     protected abstract ViewActions getViewActions();

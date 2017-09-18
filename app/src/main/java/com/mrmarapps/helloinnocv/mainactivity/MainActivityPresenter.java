@@ -2,13 +2,13 @@ package com.mrmarapps.helloinnocv.mainactivity;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 
 import com.mrmarapps.helloinnocv.R;
+import com.mrmarapps.helloinnocv.fragmentlistuser.FragmentListUser;
+import com.mrmarapps.helloinnocv.fragmentlistuser.FragmentListUserPresenter;
 import com.mrmarapps.helloinnocv.mvp.PresenterActions;
 import com.mrmarapps.helloinnocv.mvp.ViewActions;
 import com.mrmarapps.helloinnocv.mvp.activity.BaseActivityPresenter;
@@ -19,11 +19,23 @@ import javax.inject.Inject;
  * Created by mario on 12/09/17.
  */
 
-public class MainActivityPresenter extends BaseActivityPresenter<MainActivityView,MainActivity,MainActivityPresenter.Actions> implements MainActivityView.Actions, SearchView.OnQueryTextListener {
+public class MainActivityPresenter extends BaseActivityPresenter<MainActivityView,MainActivity,MainActivityPresenter.Actions> implements MainActivityView.Actions, SearchView.OnQueryTextListener, FragmentListUserPresenter.Actions {
+
+    private final FragmentListUser fragmentListUser;
 
     @Inject
-    public MainActivityPresenter(MainActivityView view, MainActivity activity) {
+    public MainActivityPresenter(MainActivityView view, MainActivity activity, FragmentListUser fragmentListUser) {
         super(view, activity);
+        this.fragmentListUser = fragmentListUser;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        openFragment(R.id.container_main,fragmentListUser);
+        fragmentListUser.getPresenter().setListener(this);
+
     }
 
     @Override
@@ -51,12 +63,13 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityVie
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+
         return false;
     }
 
     @Override
-    public boolean onQueryTextChange(String newText) {
-        view.showMessage(newText);
+    public boolean onQueryTextChange(String query) {
+        fragmentListUser.getPresenter().filterList(query);
         return true;
     }
 

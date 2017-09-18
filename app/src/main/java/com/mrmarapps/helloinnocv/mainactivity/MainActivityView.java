@@ -3,8 +3,14 @@ package com.mrmarapps.helloinnocv.mainactivity;
 import android.support.v7.widget.Toolbar;
 
 import com.mrmarapps.helloinnocv.R;
+import com.mrmarapps.helloinnocv.fragmentlistuser.FragmentListUser;
+import com.mrmarapps.helloinnocv.fragmentlistuser.FragmentListUserPresenter;
+import com.mrmarapps.helloinnocv.fragmentlistuser.viewmodel.UserItem;
+import com.mrmarapps.helloinnocv.mvp.PresenterActions;
 import com.mrmarapps.helloinnocv.mvp.ViewActions;
 import com.mrmarapps.helloinnocv.mvp.activity.BaseActivityView;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -15,7 +21,7 @@ import butterknife.OnClick;
  * Created by mario on 12/09/17.
  */
 
-public class MainActivityView extends BaseActivityView<MainActivity,MainActivityView.Actions> {
+public class MainActivityView extends BaseActivityView<MainActivity,MainActivityView.Actions> implements FragmentListUserPresenter.Actions {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -29,7 +35,9 @@ public class MainActivityView extends BaseActivityView<MainActivity,MainActivity
     public void onInitView() {
         super.onInitView();
         activity.setSupportActionBar(toolbar);
+
     }
+
 
     @OnClick(R.id.fab)
     public void onAddUser(){

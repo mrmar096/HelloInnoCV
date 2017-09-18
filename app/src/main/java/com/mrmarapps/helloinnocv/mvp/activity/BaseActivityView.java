@@ -1,6 +1,9 @@
 package com.mrmarapps.helloinnocv.mvp.activity;
 
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
+import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import com.mrmarapps.helloinnocv.R;

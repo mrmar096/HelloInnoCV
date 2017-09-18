@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.mrmarapps.helloinnocv.R;
-import com.mrmarapps.helloinnocv.fragmentlistuser.viewmodel.User;
+import com.mrmarapps.helloinnocv.fragmentlistuser.viewmodel.UserItem;
 import com.mrmarapps.helloinnocv.mvp.fragment.BaseMVPFragment;
 
 import java.util.List;
@@ -17,11 +17,13 @@ import java.util.List;
 
 public class FragmentListUser extends BaseMVPFragment<FragmentListUserPresenter,FragmentListUserPresenter.Actions> {
 
-    private List<User> data;
+    private List<UserItem> data;
 
     @Override
     public void inject(Context context) {
-
+            DaggerFragmentListUserComponent.builder()
+                    .fragmentListUserModule(new FragmentListUserModule(this))
+                    .build().inject(this);
     }
 
     @Override
@@ -29,7 +31,7 @@ public class FragmentListUser extends BaseMVPFragment<FragmentListUserPresenter,
         return R.layout.user_list_fragment;
     }
 
-    public void setData(List<User> model) {
+    public void setData(List<UserItem> model) {
         this.data = model;
     }
 

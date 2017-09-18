@@ -1,5 +1,6 @@
 package com.mrmarapps.helloinnocv.mvp.fragment;
 
+import android.support.annotation.IdRes;
 import android.support.annotation.StringRes;
 import android.view.View;
 import android.widget.Toast;
@@ -32,7 +33,11 @@ public abstract class BaseMVPFragmentView<FRAGMENT extends BaseMVPFragment, LIST
     public void onDestroyView() {
         unbinder.unbind();
     }
-    
+
+    protected View findViewById(@IdRes int idRes){
+        return fragment.getActivity().findViewById(idRes);
+    }
+
     protected String getString(@StringRes int stringRes) {
         return fragment.getString(stringRes);
     }

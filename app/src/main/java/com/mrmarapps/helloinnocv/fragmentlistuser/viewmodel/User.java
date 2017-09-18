@@ -6,13 +6,13 @@ import java.util.Date;
  * Created by mario on 14/09/17.
  */
 
-public class User {
+public class User{
 
     private int id;
 
     private String name;
 
-    private Date fecha;
+    private Date birthDate;
 
 
     public int getId() {
@@ -31,11 +31,11 @@ public class User {
         this.name = name;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 }
