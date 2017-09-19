@@ -31,7 +31,24 @@ public class FragmentListUserPresenter extends BaseMVPFragmentPresenter<Fragment
         view.filterList(query);
     }
 
+    @Override
+    public void onRefreshData() {
+        actions.onRefreshData();
+    }
+
+    @Override
+    public void onUserClicked(UserItem userItem) {
+        actions.onUserClicked(userItem);
+    }
+
+    public void stopRefreshing() {
+        view.stopRefresh();
+    }
+
 
     public interface Actions extends PresenterActions {
+        void onRefreshData();
+
+        void onUserClicked(UserItem userItem);
     }
 }

@@ -21,10 +21,11 @@ import butterknife.OnClick;
  * Created by mario on 12/09/17.
  */
 
-public class MainActivityView extends BaseActivityView<MainActivity,MainActivityView.Actions> implements FragmentListUserPresenter.Actions {
+public class MainActivityView extends BaseActivityView<MainActivity,MainActivityView.Actions> {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
 
     @Inject
     public MainActivityView(MainActivity activity) {
@@ -51,6 +52,9 @@ public class MainActivityView extends BaseActivityView<MainActivity,MainActivity
         return MainActivityView.Actions.DEFAULT;
     }
 
+
+
+
     public interface Actions extends ViewActions {
         Actions DEFAULT = new Actions() {
 
@@ -61,5 +65,6 @@ public class MainActivityView extends BaseActivityView<MainActivity,MainActivity
         };
 
         void onAddUser();
+
     }
 }

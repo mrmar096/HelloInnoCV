@@ -17,10 +17,10 @@ import java.util.List;
 public class UserItem extends AbstractItem<UserItem,UserItem.ViewHolder>{
     public int id;
     public String name;
-    public Date birthDate;
+    public String birthDate;
 
 
-    public UserItem(int id, String name, Date birthDate) {
+    public UserItem(int id, String name, String birthDate) {
         this.id = id;
         this.name = name;
         this.birthDate = birthDate;
@@ -75,7 +75,7 @@ public class UserItem extends AbstractItem<UserItem,UserItem.ViewHolder>{
         return id;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
@@ -87,7 +87,7 @@ public class UserItem extends AbstractItem<UserItem,UserItem.ViewHolder>{
         this.name = name;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:tool="http://schemas.android.com/tools"
     app:cardCornerRadius="4dp"
-    app:cardElevation="1dp"
+    app:cardElevation="3dp"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
@@ -15,42 +15,31 @@
         android:layout_marginTop="@dimen/margin_standard"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/name_user"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignWithParentIfMissing="false"
             android:layout_toEndOf="@+id/id_user"
-            android:orientation="horizontal"
-            >
+            android:textStyle="bold"
+            android:textSize="28sp"
+            tool:text="Mario Muñoz Castellanos" />
 
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:contentDescription="@string/contact"
-                app:srcCompat="@drawable/ic_person_outline_red_24dp" />
-
-            <TextView
-                android:id="@+id/name_user"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textSize="40sp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                tool:text="Mario Muñoz Castellanos" />
-
-
-        </LinearLayout>
 
         <TextView
             android:id="@+id/id_user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:layout_marginEnd="25dp"
             android:layout_marginStart="25dp"
             android:background="@drawable/bg_round"
+            android:gravity="center_vertical|center"
             android:padding="5dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:textSize="42sp"
+            android:textColor="@color/md_white_1000"
+            android:textSize="28sp"
             tool:text="33" />
 
         <TextView
@@ -59,7 +48,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:textSize="25sp"
+            android:layout_marginEnd="5dp"
+            android:drawablePadding="5dp"
+            android:drawableStart="@drawable/ic_cake_black_24dp"
+            android:drawableTint="@color/accent"
+            android:textSize="24sp"
             tool:text="25-10-2007" />
 
 

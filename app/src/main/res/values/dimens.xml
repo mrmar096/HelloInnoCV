@@ -1,7 +1,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="margin_standard">16dp</dimen>
-    <dimen name="item_height">122dp</dimen>
+    <dimen name="margin_standard">8dp</dimen>
+    <dimen name="item_height">100dp</dimen>
     <dimen name="left_margin_content">72dp</dimen>
     <dimen name="width_item_list">120dp</dimen>
     <dimen name="width_panel_list">512dp</dimen>

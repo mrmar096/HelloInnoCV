@@ -7,4 +7,10 @@
     <string name="search_hint">Busqueda de usuarios...</string>
     <string name="contact">contact</string>
     <string name="action_selecall">Seleccionar Todos</string>
+    <string name="hint_name">Introduzca su nombre</string>
+    <string name="hint_birth_date">Introduzca su Fecha de Nacimiento</string>
+    <string name="btn_save">GUARDAR</string>
+    <string name="delete_user">Eliminar Usuario</string>
+    <string name="undo_changes">Deshacer Cambios</string>
+    <string name="element_must_be_selected">No se seleccionó ningun elemento</string>
 </resources>

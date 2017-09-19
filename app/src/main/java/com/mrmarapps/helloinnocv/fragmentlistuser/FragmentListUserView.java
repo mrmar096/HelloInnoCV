@@ -1,37 +1,29 @@
 package com.mrmarapps.helloinnocv.fragmentlistuser;
 
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.AbsListView;
 
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
-import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.IItemAdapter;
 import com.mikepenz.fastadapter.ISelectionListener;
-import com.mikepenz.fastadapter.adapters.HeaderAdapter;
-import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
 import com.mikepenz.fastadapter.listeners.ItemFilterListener;
-import com.mikepenz.fastadapter_extensions.ActionModeHelper;
-import com.mikepenz.fastadapter_extensions.UndoHelper;
 import com.mikepenz.fastadapter_extensions.drag.ItemTouchCallback;
 import com.mikepenz.materialize.MaterializeBuilder;
-import com.mikepenz.materialize.util.UIUtils;
 import com.mrmarapps.helloinnocv.R;
-import com.mrmarapps.helloinnocv.fragmentlistuser.viewmodel.User;
 import com.mrmarapps.helloinnocv.fragmentlistuser.viewmodel.UserItem;
 import com.mrmarapps.helloinnocv.mvp.ViewActions;
 import com.mrmarapps.helloinnocv.mvp.fragment.BaseMVPFragmentView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -45,6 +37,10 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
 
     @BindView(R.id.recycler_users)
     public RecyclerView recyclerUsers;
+
+    @BindView(R.id.swipe_refresh_user_list)
+    public SwipeRefreshLayout swipeRefreshLayout;
+
     private FastItemAdapter<UserItem> mFastAdapter;
 
     @Inject
@@ -55,24 +51,42 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
     @Override
     public void initView() {
 
-        new MaterializeBuilder().withActivity(fragment.getActivity()).build();
-
-        initFasItemAdapter();
+        setupSwipeRefresh();
+        setupFasItemAdapter();
 
         ArrayList<UserItem> userItems = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            userItems.add(new UserItem(i,"Hola User ==> "+i,new Date()));
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+            userItems.add(new UserItem(i,"Hola User ==> "+i,format.format(new Date())));
         }
         setList(userItems);
     }
 
-    private void initFasItemAdapter() {
+    private void setupSwipeRefresh() {
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                actions.onRefreshData();
+
+            }
+        });
+
+    }
+
+
+    private void setupFasItemAdapter() {
+        new MaterializeBuilder().withActivity(fragment.getActivity()).build();
+
         mFastAdapter = new FastItemAdapter<>();
+
+
         mFastAdapter.withOnClickListener(new FastAdapter.OnClickListener<UserItem>() {
             @Override
             public boolean onClick(View v, IAdapter<UserItem> adapter, UserItem item, int position) {
-                showMessage(String.valueOf(item.getId()));
-                return false;
+                mFastAdapter.toggleSelection(position);
+                actions.onUserClicked(item);
+                return true;
             }
         });
 
@@ -81,11 +95,21 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
         if(recyclerUsers==null){
             recyclerUsers = (RecyclerView) findViewById(R.id.recycler_users);
         }
-
+        recyclerUsers   .setHasFixedSize(true);
         recyclerUsers.swapAdapter(mFastAdapter,true);
     }
 
+    public void stopRefresh(){
+        if(swipeRefreshLayout!=null && swipeRefreshLayout.isRefreshing()){
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
 
+    public void startRefresh(){
+        if(swipeRefreshLayout!=null && !swipeRefreshLayout.isRefreshing()){
+            swipeRefreshLayout.setRefreshing(true);
+        }
+    }
 
     public void filterList(String query){
         mFastAdapter.filter(query);
@@ -108,7 +132,7 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
 
     private FastItemAdapter<UserItem> getAdapter() {
         if(mFastAdapter==null){
-            initFasItemAdapter();
+            setupFasItemAdapter();
         }
         return mFastAdapter;
     }
@@ -146,5 +170,8 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
     }
 
     public interface Actions extends ViewActions{
+        void onRefreshData();
+
+        void onUserClicked(UserItem item);
     }
 }
