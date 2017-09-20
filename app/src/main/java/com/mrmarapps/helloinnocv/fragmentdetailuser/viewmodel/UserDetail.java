@@ -20,6 +20,11 @@ public class UserDetail {
         this.birthDate = birthDate;
     }
 
+    public UserDetail(String name, String birthDate) {
+        this.name=name;
+        this.birthDate=birthDate;
+    }
+
     public int getId() {
         return id;
     }

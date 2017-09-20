@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.mrmarapps.helloinnocv.R;
 import com.mrmarapps.helloinnocv.di.activity.InjectedActivity;
+import com.mrmarapps.helloinnocv.fragmentdetailuser.viewmodel.UserDetail;
 import com.mrmarapps.helloinnocv.mvp.ViewActions;
 
 import butterknife.ButterKnife;

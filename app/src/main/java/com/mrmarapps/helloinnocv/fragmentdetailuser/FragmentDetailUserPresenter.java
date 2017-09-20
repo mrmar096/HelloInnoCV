@@ -27,6 +27,7 @@ public class FragmentDetailUserPresenter extends BaseMVPFragmentPresenter<Fragme
     }
 
     public void prepareNewUser() {
+        userDetail=null;
         view.showDetailView();
         view.clearFields();
     }
@@ -41,8 +42,23 @@ public class FragmentDetailUserPresenter extends BaseMVPFragmentPresenter<Fragme
         }
     }
 
+    @Override
+    public void onSaved(String birthDate, String name) {
+        UserDetail userDetail = new UserDetail(name,birthDate);
+        if(this.userDetail==null){
+            actions.onSavedNewUserDetail(userDetail);
+        }else{
+            userDetail.setId(userDetail.getId());
+            actions.onSavedUserDetail(userDetail);
+        }
+
+    }
+
 
     public interface Actions extends PresenterActions {
 
+        void onSavedUserDetail(UserDetail userDetail);
+
+        void onSavedNewUserDetail(UserDetail userDetail);
     }
 }

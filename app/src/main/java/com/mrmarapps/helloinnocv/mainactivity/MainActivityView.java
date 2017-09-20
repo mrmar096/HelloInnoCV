@@ -65,10 +65,21 @@ public class MainActivityView extends BaseActivityView<MainActivity,MainActivity
             showDeleteAction(false);
             showUndoAction(true);
             fragmentDetailUser.getPresenter().prepareNewUser();
+        }else{
+            actions.onGoToDetail(-1);
         }
     }
 
+    @Override
+    public void onSavedUserDetail(UserDetail userDetail) {
+        showMessage("Is OLDER");
 
+    }
+
+    @Override
+    public void onSavedNewUserDetail(UserDetail userDetail) {
+        showMessage("Is NEWEST");
+    }
 
     @Override
     protected MainActivityView.Actions getDefaultListener() {
@@ -108,9 +119,10 @@ public class MainActivityView extends BaseActivityView<MainActivity,MainActivity
     public void onUserClicked(UserItem userItem) {
         if(isVisibleFragmentDetail){
             showActionsToolbar();
-            //Todo mapper userItem to UserDetail
-            UserDetail userDetail= new UserDetail(userItem.getId(),userItem.getName(),userItem.getBirthDate());
-            fragmentDetailUser.getPresenter().setData(userDetail);
+            actions.onUserShowDetail(userItem);
+
+        }else{
+            actions.onGoToDetail(userItem.getId());
         }
     }
 
@@ -130,11 +142,27 @@ public class MainActivityView extends BaseActivityView<MainActivity,MainActivity
         fragmentDetailUser.getPresenter().undoDetailChanges();
     }
 
+    public void setDetailData(UserDetail userDetail) {
+        fragmentDetailUser.getPresenter().setData(userDetail);
+    }
+
 
     public interface Actions extends ViewActions {
         Actions DEFAULT = new Actions() {
 
+            @Override
+            public void onGoToDetail(int id) {
+
+            }
+
+            @Override
+            public void onUserShowDetail(UserItem userItem) {
+
+            }
         };
 
+        void onGoToDetail(int id);
+
+        void onUserShowDetail(UserItem userItem);
     }
 }

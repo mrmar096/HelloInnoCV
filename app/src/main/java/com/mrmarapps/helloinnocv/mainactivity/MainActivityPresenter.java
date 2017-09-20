@@ -13,12 +13,14 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.mrmarapps.helloinnocv.R;
+import com.mrmarapps.helloinnocv.detailactivity.DetailActivity;
 import com.mrmarapps.helloinnocv.fragmentdetailuser.FragmentDetailUser;
 import com.mrmarapps.helloinnocv.fragmentdetailuser.FragmentDetailUserPresenter;
 import com.mrmarapps.helloinnocv.fragmentdetailuser.viewmodel.UserDetail;
 import com.mrmarapps.helloinnocv.fragmentlistuser.FragmentListUser;
 import com.mrmarapps.helloinnocv.fragmentlistuser.FragmentListUserPresenter;
 import com.mrmarapps.helloinnocv.fragmentlistuser.viewmodel.UserItem;
+import com.mrmarapps.helloinnocv.mainactivity.viewmodel.UserItemToUserDetail;
 import com.mrmarapps.helloinnocv.mvp.PresenterActions;
 import com.mrmarapps.helloinnocv.mvp.ViewActions;
 import com.mrmarapps.helloinnocv.mvp.activity.BaseActivityPresenter;
@@ -93,6 +95,17 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityVie
 
 
         return true;
+    }
+
+    @Override
+    public void onUserShowDetail(UserItem userItem) {
+        UserDetail userDetail = new UserItemToUserDetail().map(userItem);
+        view.setDetailData(userDetail);
+    }
+
+    @Override
+    public void onGoToDetail(int id) {
+        DetailActivity.launch(activity,id);
     }
 
     public interface Actions extends PresenterActions {

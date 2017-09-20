@@ -21,7 +21,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import butterknife.OnTouch;
 
 /**
  * Created by mario on 14/09/17.
@@ -89,6 +88,11 @@ public class FragmentDetailUserView extends BaseMVPFragmentView<FragmentDetailUs
                 myCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+    @OnClick(R.id.btn_save)
+    public void onSaved(){
+        actions.onSaved(birthDate.getText().toString(),name.getText().toString());
+    }
+
     private void setDateIntoEditext() {
         String myFormat = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -130,5 +134,6 @@ public class FragmentDetailUserView extends BaseMVPFragmentView<FragmentDetailUs
 
     public interface Actions extends ViewActions{
 
+        void onSaved(String birthDate, String name);
     }
 }

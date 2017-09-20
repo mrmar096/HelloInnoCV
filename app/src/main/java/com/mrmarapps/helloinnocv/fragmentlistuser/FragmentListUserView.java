@@ -57,7 +57,7 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
         ArrayList<UserItem> userItems = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-            userItems.add(new UserItem(i,"Hola User ==> "+i,format.format(new Date())));
+            userItems.add(new UserItem(10+i,"Hola User ==> 0"+i,format.format(new Date())));
         }
         setList(userItems);
 
@@ -123,10 +123,8 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
         innoCvAdapter.getItemFilter().withFilterPredicate(new IItemAdapter.Predicate<UserItem>() {
             @Override
             public boolean filter(UserItem item, CharSequence constraint) {
-                boolean itemId = !String.valueOf(item.getId()).equals(String.valueOf(constraint));
-                boolean itemName = !String.valueOf(item.getName()).contains(String.valueOf(constraint));
-                boolean itemBirthDate = !String.valueOf(item.getBirthDate()).contains(String.valueOf(constraint));
-                return itemId || itemName ||itemBirthDate;
+                boolean itemName = String.valueOf(item.getName()).contains(String.valueOf(constraint));
+                return  !itemName;
             }
         });
     }
