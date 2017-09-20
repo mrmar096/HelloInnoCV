@@ -2,6 +2,7 @@ package com.mrmarapps.helloinnocv.mainactivity;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.mrmarapps.helloinnocv.R;
 import com.mrmarapps.helloinnocv.mvp.activity.BaseActivity;
@@ -26,6 +27,11 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return presenter.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return presenter.onOptionsItemSelected(item);
     }
 
     @Override

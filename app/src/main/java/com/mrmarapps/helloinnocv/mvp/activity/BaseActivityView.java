@@ -51,6 +51,18 @@ public abstract class BaseActivityView<ACTIVITY extends InjectedActivity,LISTENE
         unbinder.unbind();
     }
 
+    protected boolean canOpenFrament(@IdRes int container) {
+        return activity.findViewById(container)!=null;
+    }
+
+    protected void openFragment(@IdRes int idContainer, Fragment fragment) {
+        activity.getSupportFragmentManager()
+                .beginTransaction()
+                .replace(idContainer, fragment)
+                .commitNowAllowingStateLoss();
+
+    }
+
     public void showErrorConnection() {
         Toast.makeText(activity, R.string.error_conection, Toast.LENGTH_SHORT).show();
     }
@@ -72,6 +84,7 @@ public abstract class BaseActivityView<ACTIVITY extends InjectedActivity,LISTENE
     public void showErrorOcurred() {
         showError(R.string.error_ocurred);
     }
+
 
 
 }

@@ -1,8 +1,13 @@
 package com.mrmarapps.helloinnocv.mainactivity;
 
+import android.os.Handler;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.mrmarapps.helloinnocv.R;
+import com.mrmarapps.helloinnocv.fragmentdetailuser.FragmentDetailUser;
+import com.mrmarapps.helloinnocv.fragmentdetailuser.FragmentDetailUserPresenter;
+import com.mrmarapps.helloinnocv.fragmentdetailuser.viewmodel.UserDetail;
 import com.mrmarapps.helloinnocv.fragmentlistuser.FragmentListUser;
 import com.mrmarapps.helloinnocv.fragmentlistuser.FragmentListUserPresenter;
 import com.mrmarapps.helloinnocv.fragmentlistuser.viewmodel.UserItem;
@@ -21,15 +26,21 @@ import butterknife.OnClick;
  * Created by mario on 12/09/17.
  */
 
-public class MainActivityView extends BaseActivityView<MainActivity,MainActivityView.Actions> {
+public class MainActivityView extends BaseActivityView<MainActivity,MainActivityView.Actions> implements FragmentListUserPresenter.Actions, FragmentDetailUserPresenter.Actions {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    private final FragmentListUser fragmentListUser;
+    private final FragmentDetailUser fragmentDetailUser;
+
+    private boolean isVisibleFragmentDetail;
 
 
     @Inject
-    public MainActivityView(MainActivity activity) {
+    public MainActivityView(MainActivity activity, FragmentListUser fragmentListUser, FragmentDetailUser fragmentDetailUser) {
         super(activity);
+        this.fragmentListUser = fragmentListUser;
+        this.fragmentDetailUser = fragmentDetailUser;
     }
 
     @Override
@@ -37,12 +48,24 @@ public class MainActivityView extends BaseActivityView<MainActivity,MainActivity
         super.onInitView();
         activity.setSupportActionBar(toolbar);
 
+        openFragment(R.id.container_main,fragmentListUser);
+        fragmentListUser.getPresenter().setListener(this);
+        if(canOpenFrament(R.id.container_user_detail)){
+            openFragment(R.id.container_user_detail,fragmentDetailUser);
+            fragmentDetailUser.getPresenter().setListener(this);
+            isVisibleFragmentDetail=true;
+        }
+
     }
 
 
     @OnClick(R.id.fab)
     public void onAddUser(){
-        actions.onAddUser();
+        if(isVisibleFragmentDetail){
+            showDeleteAction(false);
+            showUndoAction(true);
+            fragmentDetailUser.getPresenter().prepareNewUser();
+        }
     }
 
 
@@ -52,19 +75,66 @@ public class MainActivityView extends BaseActivityView<MainActivity,MainActivity
         return MainActivityView.Actions.DEFAULT;
     }
 
+    public void showActionsToolbar() {
+        showUndoAction(true);
+        showDeleteAction(true);
+    }
+    public void hideActionsToolbar() {
+        showUndoAction(false);
+        showDeleteAction(false);
+    }
 
+    private MenuItem showDeleteAction(boolean value) {
+        return toolbar.getMenu().findItem(R.id.delete_item).setVisible(value);
+    }
+
+    private void showUndoAction(boolean value) {
+        toolbar.getMenu().findItem(R.id.undo_item).setVisible(value);
+    }
+
+
+
+    @Override
+    public void onRefreshData() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fragmentListUser.getPresenter().stopRefreshing();
+            }
+        },1000);
+    }
+
+    @Override
+    public void onUserClicked(UserItem userItem) {
+        if(isVisibleFragmentDetail){
+            showActionsToolbar();
+            //Todo mapper userItem to UserDetail
+            UserDetail userDetail= new UserDetail(userItem.getId(),userItem.getName(),userItem.getBirthDate());
+            fragmentDetailUser.getPresenter().setData(userDetail);
+        }
+    }
+
+    public void filterList(String query) {
+        fragmentListUser.getPresenter().filterList(query);
+    }
+
+    public void deleteItemSelected() {
+        fragmentListUser.getPresenter().deleteItemSelected();
+    }
+
+    public void showEmptyDetail() {
+        fragmentDetailUser.getPresenter().showEmptyDetail();
+    }
+
+    public void undoDetailChanges() {
+        fragmentDetailUser.getPresenter().undoDetailChanges();
+    }
 
 
     public interface Actions extends ViewActions {
         Actions DEFAULT = new Actions() {
 
-            @Override
-            public void onAddUser() {
-
-            }
         };
-
-        void onAddUser();
 
     }
 }

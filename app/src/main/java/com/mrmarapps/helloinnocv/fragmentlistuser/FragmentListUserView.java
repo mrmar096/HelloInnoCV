@@ -2,19 +2,18 @@ package com.mrmarapps.helloinnocv.fragmentlistuser;
 
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.AbsListView;
 
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.IItemAdapter;
-import com.mikepenz.fastadapter.ISelectionListener;
-import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
 import com.mikepenz.fastadapter.listeners.ItemFilterListener;
 import com.mikepenz.fastadapter_extensions.drag.ItemTouchCallback;
 import com.mikepenz.materialize.MaterializeBuilder;
 import com.mrmarapps.helloinnocv.R;
+import com.mrmarapps.helloinnocv.adapters.InnoCvAdapter;
 import com.mrmarapps.helloinnocv.fragmentlistuser.viewmodel.UserItem;
 import com.mrmarapps.helloinnocv.mvp.ViewActions;
 import com.mrmarapps.helloinnocv.mvp.fragment.BaseMVPFragmentView;
@@ -41,7 +40,8 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
     @BindView(R.id.swipe_refresh_user_list)
     public SwipeRefreshLayout swipeRefreshLayout;
 
-    private FastItemAdapter<UserItem> mFastAdapter;
+    private InnoCvAdapter<UserItem> innoCvAdapter;
+    private LinearLayoutManager mLayoutManager;
 
     @Inject
     public FragmentListUserView(FragmentListUser fragment) {
@@ -60,6 +60,8 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
             userItems.add(new UserItem(i,"Hola User ==> "+i,format.format(new Date())));
         }
         setList(userItems);
+
+
     }
 
     private void setupSwipeRefresh() {
@@ -78,13 +80,12 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
     private void setupFasItemAdapter() {
         new MaterializeBuilder().withActivity(fragment.getActivity()).build();
 
-        mFastAdapter = new FastItemAdapter<>();
+        innoCvAdapter = new InnoCvAdapter<>();
 
-
-        mFastAdapter.withOnClickListener(new FastAdapter.OnClickListener<UserItem>() {
+        innoCvAdapter.withOnClickListener(new FastAdapter.OnClickListener<UserItem>() {
             @Override
             public boolean onClick(View v, IAdapter<UserItem> adapter, UserItem item, int position) {
-                mFastAdapter.toggleSelection(position);
+                innoCvAdapter.selectItem(v,position);
                 actions.onUserClicked(item);
                 return true;
             }
@@ -95,9 +96,12 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
         if(recyclerUsers==null){
             recyclerUsers = (RecyclerView) findViewById(R.id.recycler_users);
         }
-        recyclerUsers   .setHasFixedSize(true);
-        recyclerUsers.swapAdapter(mFastAdapter,true);
+        mLayoutManager = new LinearLayoutManager(fragment.getContext());
+        recyclerUsers.setLayoutManager(mLayoutManager);
+        recyclerUsers.setHasFixedSize(true);
+        recyclerUsers.swapAdapter(innoCvAdapter,true);
     }
+
 
     public void stopRefresh(){
         if(swipeRefreshLayout!=null && swipeRefreshLayout.isRefreshing()){
@@ -112,14 +116,17 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
     }
 
     public void filterList(String query){
-        mFastAdapter.filter(query);
+        innoCvAdapter.filter(query);
     }
 
     private void configureFilter() {
-        mFastAdapter.getItemFilter().withFilterPredicate(new IItemAdapter.Predicate<UserItem>() {
+        innoCvAdapter.getItemFilter().withFilterPredicate(new IItemAdapter.Predicate<UserItem>() {
             @Override
             public boolean filter(UserItem item, CharSequence constraint) {
-                return !String.valueOf(item.getId()).equals(String.valueOf(constraint));
+                boolean itemId = !String.valueOf(item.getId()).equals(String.valueOf(constraint));
+                boolean itemName = !String.valueOf(item.getName()).contains(String.valueOf(constraint));
+                boolean itemBirthDate = !String.valueOf(item.getBirthDate()).contains(String.valueOf(constraint));
+                return itemId || itemName ||itemBirthDate;
             }
         });
     }
@@ -130,11 +137,11 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
 
     }
 
-    private FastItemAdapter<UserItem> getAdapter() {
-        if(mFastAdapter==null){
+    private InnoCvAdapter<UserItem> getAdapter() {
+        if(innoCvAdapter ==null){
             setupFasItemAdapter();
         }
-        return mFastAdapter;
+        return innoCvAdapter;
     }
 
     public void addUser(UserItem user){
@@ -167,6 +174,11 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
     @Override
     public void itemTouchDropped(int oldPosition, int newPosition) {
 
+    }
+
+    public void deleteItemSelected() {
+        int positionSelected = getAdapter().getPositionSelected();
+        getAdapter().remove(positionSelected);
     }
 
     public interface Actions extends ViewActions{

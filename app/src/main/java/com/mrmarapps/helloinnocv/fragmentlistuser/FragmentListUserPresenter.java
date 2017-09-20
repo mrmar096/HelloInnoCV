@@ -45,6 +45,10 @@ public class FragmentListUserPresenter extends BaseMVPFragmentPresenter<Fragment
         view.stopRefresh();
     }
 
+    public void deleteItemSelected() {
+        view.deleteItemSelected();
+    }
+
 
     public interface Actions extends PresenterActions {
         void onRefreshData();

@@ -9,6 +9,7 @@ import android.support.v7.widget.SearchView;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.mrmarapps.helloinnocv.R;
@@ -28,31 +29,18 @@ import javax.inject.Inject;
  * Created by mario on 12/09/17.
  */
 
-public class MainActivityPresenter extends BaseActivityPresenter<MainActivityView,MainActivity,MainActivityPresenter.Actions> implements MainActivityView.Actions, SearchView.OnQueryTextListener, FragmentListUserPresenter.Actions, FragmentDetailUserPresenter.Actions {
+public class MainActivityPresenter extends BaseActivityPresenter<MainActivityView,MainActivity,MainActivityPresenter.Actions> implements MainActivityView.Actions, SearchView.OnQueryTextListener {
 
-    private final FragmentListUser fragmentListUser;
-    private final FragmentDetailUser fragmentDetailUser;
-    private boolean isVisibleFragmentDetail;
+
 
     @Inject
-    public MainActivityPresenter(MainActivityView view, MainActivity activity, FragmentListUser fragmentListUser, FragmentDetailUser fragmentDetailUser) {
+    public MainActivityPresenter(MainActivityView view, MainActivity activity) {
         super(view, activity);
-        this.fragmentListUser = fragmentListUser;
-        this.fragmentDetailUser = fragmentDetailUser;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-        openFragment(R.id.container_main,fragmentListUser);
-        fragmentListUser.getPresenter().setListener(this);
-        if(canOpenFrament(R.id.container_user_detail)){
-            openFragment(R.id.container_user_detail,fragmentDetailUser);
-            fragmentDetailUser.getPresenter().setListener(this);
-            isVisibleFragmentDetail=true;
-        }
-
     }
 
     @Override
@@ -68,12 +56,8 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityVie
         SearchView searchView =
                 (SearchView) menu.findItem(R.id.menu_search).getActionView();
 
-        if(isVisibleFragmentDetail){
-            menu.findItem(R.id.undo_item).setVisible(true);
-            menu.findItem(R.id.delete_item).setVisible(true);
-        }else{
-            searchView.setMaxWidth(Integer.MAX_VALUE);
-        }
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
 
 
         searchView.setOnQueryTextListener(this);
@@ -89,34 +73,26 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityVie
 
     @Override
     public boolean onQueryTextChange(String query) {
-        fragmentListUser.getPresenter().filterList(query);
+        view.filterList(query);
         return true;
     }
 
-    @Override
-    public void onAddUser() {
-        if(isVisibleFragmentDetail){
-            fragmentDetailUser.getPresenter().prepareNewUser();
-        }
-    }
 
-    @Override
-    public void onRefreshData() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                fragmentListUser.getPresenter().stopRefreshing();
-            }
-        },1000);
-    }
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-    @Override
-    public void onUserClicked(UserItem userItem) {
-        if(isVisibleFragmentDetail){
-            //Todo mapper userItem to UserDetail
-            UserDetail userDetail= new UserDetail(userItem.getId(),userItem.getName(),userItem.getBirthDate());
-            fragmentDetailUser.getPresenter().setData(userDetail);
+        switch (item.getItemId()){
+            case R.id.delete_item:
+                view.showEmptyDetail();
+                view.deleteItemSelected();
+                break;
+            case R.id.undo_item:
+                view.undoDetailChanges();
+                break;
+
         }
+
+
+        return true;
     }
 
     public interface Actions extends PresenterActions {

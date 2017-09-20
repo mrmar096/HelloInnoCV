@@ -34,17 +34,7 @@ public abstract class BaseActivityPresenter<VIEW extends BaseActivityView,ACTIVI
     }
 
 
-    protected boolean canOpenFrament(@IdRes int container) {
-        return activity.findViewById(container)!=null;
-    }
 
-    protected void openFragment(@IdRes int idContainer, Fragment fragment) {
-        activity.getSupportFragmentManager()
-                .beginTransaction()
-                .replace(idContainer, fragment)
-                .commitNowAllowingStateLoss();
-
-    }
 
     protected abstract ViewActions getViewActions();
 

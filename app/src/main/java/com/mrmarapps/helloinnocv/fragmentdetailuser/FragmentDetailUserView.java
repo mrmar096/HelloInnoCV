@@ -99,18 +99,33 @@ public class FragmentDetailUserView extends BaseMVPFragmentView<FragmentDetailUs
     public void showFields() {
         containerFields.setVisibility(View.VISIBLE);
     }
+    public void hideFields() {
+        containerFields.setVisibility(View.GONE);
+    }
 
     public void hideTextSelectElements() {
         tvSelectElement.setVisibility(View.GONE);
+    }
+    public void showTextSelectElements() {
+        tvSelectElement.setVisibility(View.VISIBLE);
     }
 
     public void showSaveButton() {
         btnSave.setVisibility(View.VISIBLE);
     }
+    public void hideSaveButton() {
+        btnSave.setVisibility(View.GONE);
+    }
 
     public void clearFields() {
         name.setText("");
         birthDate.setText("");
+    }
+
+    public void hideDetailElement() {
+        hideFields();
+        hideSaveButton();
+        showTextSelectElements();
     }
 
     public interface Actions extends ViewActions{

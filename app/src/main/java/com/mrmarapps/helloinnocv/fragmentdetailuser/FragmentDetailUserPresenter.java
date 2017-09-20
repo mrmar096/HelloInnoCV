@@ -31,6 +31,16 @@ public class FragmentDetailUserPresenter extends BaseMVPFragmentPresenter<Fragme
         view.clearFields();
     }
 
+    public void showEmptyDetail() {
+        view.hideDetailElement();
+    }
+
+    public void undoDetailChanges() {
+        if(userDetail!=null){
+            setData(userDetail);
+        }
+    }
+
 
     public interface Actions extends PresenterActions {
 
