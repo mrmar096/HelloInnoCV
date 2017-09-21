@@ -49,6 +49,18 @@ public class FragmentListUserPresenter extends BaseMVPFragmentPresenter<Fragment
         view.deleteItemSelected();
     }
 
+    public void addUserItem(UserItem userItem) {
+        view.addUser(userItem);
+    }
+
+    public int getIdElementSelected() {
+        return view.getIdUserSelected();
+    }
+
+    public void updateUser(UserItem newUser, UserItem oldUserItem) {
+        view.updateUser(newUser,oldUserItem);
+    }
+
 
     public interface Actions extends PresenterActions {
         void onRefreshData();

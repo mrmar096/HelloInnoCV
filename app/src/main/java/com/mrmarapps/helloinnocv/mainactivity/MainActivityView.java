@@ -1,9 +1,12 @@
 package com.mrmarapps.helloinnocv.mainactivity;
 
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mrmarapps.helloinnocv.R;
 import com.mrmarapps.helloinnocv.fragmentdetailuser.FragmentDetailUser;
 import com.mrmarapps.helloinnocv.fragmentdetailuser.FragmentDetailUserPresenter;
@@ -72,13 +75,14 @@ public class MainActivityView extends BaseActivityView<MainActivity,MainActivity
 
     @Override
     public void onSavedUserDetail(UserDetail userDetail) {
-        showMessage("Is OLDER");
+
+        actions.onUpdateUser(userDetail);
 
     }
 
     @Override
     public void onSavedNewUserDetail(UserDetail userDetail) {
-        showMessage("Is NEWEST");
+        actions.onPostNewUser(userDetail);
     }
 
     @Override
@@ -107,14 +111,12 @@ public class MainActivityView extends BaseActivityView<MainActivity,MainActivity
 
     @Override
     public void onRefreshData() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                fragmentListUser.getPresenter().stopRefreshing();
-            }
-        },1000);
+     actions.onRefreshList();
     }
 
+    public void stopRefreshing(){
+        fragmentListUser.getPresenter().stopRefreshing();
+    }
     @Override
     public void onUserClicked(UserItem userItem) {
         if(isVisibleFragmentDetail){
@@ -146,6 +148,33 @@ public class MainActivityView extends BaseActivityView<MainActivity,MainActivity
         fragmentDetailUser.getPresenter().setData(userDetail);
     }
 
+    public void displayUsers(ArrayList<UserItem> userItems) {
+        fragmentListUser.getPresenter().setData(userItems);
+    }
+
+    public void addUserToList(UserItem userItem) {
+        fragmentListUser.getPresenter().addUserItem(userItem);
+    }
+
+    public void askDeleteItem() {
+        final int idElementSelected = fragmentListUser.getPresenter().getIdElementSelected();
+        new MaterialDialog.Builder(activity)
+                .title(R.string.ask_delete)
+                .content(R.string.action_cant_undo)
+                .negativeText(R.string.cancel)
+                .positiveText(R.string.accept)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        actions.onDeleteItem(idElementSelected);
+                    }
+                }).show();
+    }
+
+    public void setUserToList(UserItem newUser, UserItem oldUserItem) {
+        fragmentListUser.getPresenter().updateUser(newUser,oldUserItem);
+    }
+
 
     public interface Actions extends ViewActions {
         Actions DEFAULT = new Actions() {
@@ -159,10 +188,38 @@ public class MainActivityView extends BaseActivityView<MainActivity,MainActivity
             public void onUserShowDetail(UserItem userItem) {
 
             }
+
+            @Override
+            public void onRefreshList() {
+
+            }
+
+            @Override
+            public void onPostNewUser(UserDetail userDetail) {
+
+            }
+
+            @Override
+            public void onUpdateUser(UserDetail userDetail) {
+
+            }
+
+            @Override
+            public void onDeleteItem(int idElementSelected) {
+
+            }
         };
 
         void onGoToDetail(int id);
 
         void onUserShowDetail(UserItem userItem);
+
+        void onRefreshList();
+
+        void onPostNewUser(UserDetail userDetail);
+
+        void onUpdateUser(UserDetail userDetail);
+
+        void onDeleteItem(int idElementSelected);
     }
 }

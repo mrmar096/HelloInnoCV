@@ -1,5 +1,6 @@
 package com.mrmarapps.helloinnocv.detailactivity;
 
+import com.mrmarapps.helloinnocv.di.ApiModule;
 import com.mrmarapps.helloinnocv.di.activity.PerActivity;
 import com.mrmarapps.helloinnocv.di.application.InjectedApplicationComponent;
 
@@ -11,7 +12,10 @@ import dagger.Component;
 
 @PerActivity
 @Component( dependencies = InjectedApplicationComponent.class,
-            modules = DetailActivityModule.class
+        modules ={
+                DetailActivityModule.class,
+                ApiModule.class
+        }
 )
 public interface DetailActivityComponent {
 

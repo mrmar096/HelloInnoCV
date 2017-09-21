@@ -1,39 +1,31 @@
 package com.mrmarapps.helloinnocv.mainactivity;
 
-import android.app.SearchManager;
-import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 
 import com.mrmarapps.helloinnocv.R;
+import com.mrmarapps.helloinnocv.apiclient.apicalls.BaseModel;
 import com.mrmarapps.helloinnocv.apiclient.apicalls.InnocvApi;
 import com.mrmarapps.helloinnocv.apiclient.model.UserModel.UserModel;
+import com.mrmarapps.helloinnocv.apiclient.request.UserRequest.UserRequest;
 import com.mrmarapps.helloinnocv.detailactivity.DetailActivity;
-import com.mrmarapps.helloinnocv.fragmentdetailuser.FragmentDetailUser;
-import com.mrmarapps.helloinnocv.fragmentdetailuser.FragmentDetailUserPresenter;
+import com.mrmarapps.helloinnocv.detailactivity.mapper.UserDetailToUserRequest;
 import com.mrmarapps.helloinnocv.fragmentdetailuser.viewmodel.UserDetail;
-import com.mrmarapps.helloinnocv.fragmentlistuser.FragmentListUser;
-import com.mrmarapps.helloinnocv.fragmentlistuser.FragmentListUserPresenter;
+import com.mrmarapps.helloinnocv.fragmentdetailuser.viewmodel.mapper.UserModelToUserDetail;
 import com.mrmarapps.helloinnocv.fragmentlistuser.viewmodel.UserItem;
+import com.mrmarapps.helloinnocv.mainactivity.domain.mapper.UserModelToUserItem;
 import com.mrmarapps.helloinnocv.mainactivity.viewmodel.UserItemToUserDetail;
 import com.mrmarapps.helloinnocv.mvp.PresenterActions;
 import com.mrmarapps.helloinnocv.mvp.ViewActions;
 import com.mrmarapps.helloinnocv.mvp.activity.BaseActivityPresenter;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import javax.inject.Inject;
 
-import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -98,7 +90,7 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityVie
         switch (item.getItemId()){
             case R.id.delete_item:
                 view.showEmptyDetail();
-                view.deleteItemSelected();
+                view.askDeleteItem();
                 break;
             case R.id.undo_item:
                 view.undoDetailChanges();
@@ -108,6 +100,33 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityVie
 
 
         return true;
+    }
+
+    @Override
+    public void onDeleteItem(int idUser) {
+        innocvApi.removeUser(String.valueOf(idUser))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<BaseModel>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //Here Because Api return empty on delete
+                        view.showMessage(R.string.user_deleted);
+                        view.deleteItemSelected();
+                    }
+
+                    @Override
+                    public void onNext(BaseModel userModel) {
+                        //If entry Here means that api show Message Error
+                        view.showMessage(R.string.error_ocurred);
+                    }
+                })
+        ;
     }
 
     @Override
@@ -126,25 +145,92 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityVie
     }
 
     private void getAllUsers() {
-        Observable<List<UserModel>> users = innocvApi.getUsers();
-        users.subscribeOn(Schedulers.io());
-        users.observeOn(AndroidSchedulers.mainThread());
-        users.subscribe(new Subscriber<List<UserModel>>() {
-            @Override
-            public void onCompleted() {
+        view.showLoading();
+        innocvApi.getUsers()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<UserModel>>() {
+                    @Override
+                    public void onCompleted() {
+                        view.hideLoading();
+                        view.stopRefreshing();
+                    }
 
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showMessage(R.string.error_ocurred);
+                        view.hideLoading();
+                        view.stopRefreshing();
+                    }
 
-            @Override
-            public void onError(Throwable e) {
+                    @Override
+                    public void onNext(List<UserModel> userModels) {
+                        ArrayList<UserItem> userItems = (ArrayList<UserItem>) new UserModelToUserItem().map(userModels);
+                        view.displayUsers(userItems);
+                    }
+                });
 
-            }
+    }
 
-            @Override
-            public void onNext(List<UserModel> userModels) {
-                view.showMessage("Lista cargada "+userModels);
-            }
-        });
+    @Override
+    public void onPostNewUser(UserDetail userDetail) {
+        UserRequest userRequest = new UserDetailToUserRequest().map(userDetail);
+        view.showLoading();
+        innocvApi.postUser(userRequest)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<UserModel>() {
+                    @Override
+                    public void onCompleted() {
+                        view.hideLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showMessage(R.string.error_ocurred);
+                        view.hideLoading();
+                        view.stopRefreshing();
+                    }
+
+                    @Override
+                    public void onNext(UserModel userModels) {
+                        UserItem userItem = new UserModelToUserItem().map(userModels);
+                        view.addUserToList(userItem);
+                    }
+                });
+
+    }
+
+    @Override
+    public void onUpdateUser(UserDetail userDetail) {
+        final UserItem oldUserItem = new UserItemToUserDetail().reverseMap(userDetail);
+        UserRequest userRequest = new UserDetailToUserRequest().map(userDetail);
+        innocvApi.updateUser(userRequest)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<UserModel>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showMessage(R.string.error_ocurred);
+                    }
+
+                    @Override
+                    public void onNext(UserModel userModels) {
+                        UserItem newUser = new UserModelToUserItem().map(userModels);
+                        view.showMessage(R.string.user_updated);
+                        view.setUserToList(newUser,oldUserItem);
+                    }
+                });
+    }
+
+    @Override
+    public void onRefreshList() {
+        getAllUsers();
     }
 
     public interface Actions extends PresenterActions {

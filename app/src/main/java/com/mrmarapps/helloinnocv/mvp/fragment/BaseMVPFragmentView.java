@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.mrmarapps.helloinnocv.R;
+import com.mrmarapps.helloinnocv.fragmentlistuser.viewmodel.UserItem;
 import com.mrmarapps.helloinnocv.mvp.ViewActions;
 
 import butterknife.ButterKnife;
@@ -61,4 +62,6 @@ public abstract class BaseMVPFragmentView<FRAGMENT extends BaseMVPFragment, LIST
     public void showError(@StringRes int stringResource) {
         Toast.makeText(fragment.getActivity(), stringResource, Toast.LENGTH_SHORT).show();
     }
+
+
 }

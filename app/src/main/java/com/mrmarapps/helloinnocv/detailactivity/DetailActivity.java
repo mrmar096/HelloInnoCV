@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.ActivityCompat;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.mrmarapps.helloinnocv.R;
+import com.mrmarapps.helloinnocv.di.ApiModule;
 import com.mrmarapps.helloinnocv.mvp.activity.BaseActivity;
 
 /**
@@ -23,6 +25,7 @@ public class DetailActivity extends BaseActivity<DetailActivityPresenter> {
         DaggerDetailActivityComponent.builder()
                 .injectedApplicationComponent(getApplicationComponent())
                 .detailActivityModule(new DetailActivityModule(this))
+                .apiModule(new ApiModule(this))
                 .build().inject(this);
 
     }
@@ -36,8 +39,13 @@ public class DetailActivity extends BaseActivity<DetailActivityPresenter> {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return presenter.onCreateOptionsMenu(menu);
+
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        presenter.onCreateOptionsMenu(menu);
+        return super.onCreateOptionsMenu(menu);
+
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

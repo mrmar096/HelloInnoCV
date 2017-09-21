@@ -3,6 +3,8 @@ package com.mrmarapps.helloinnocv.fragmentdetailuser;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 
 import com.mrmarapps.helloinnocv.R;
@@ -32,6 +34,7 @@ public class FragmentDetailUser extends BaseMVPFragment<FragmentDetailUserPresen
     public void setData(UserDetail model) {
         this.model = model;
     }
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

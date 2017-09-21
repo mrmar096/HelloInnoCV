@@ -1,9 +1,13 @@
 package com.mrmarapps.helloinnocv.detailactivity;
 
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mrmarapps.helloinnocv.R;
 import com.mrmarapps.helloinnocv.fragmentdetailuser.FragmentDetailUser;
 import com.mrmarapps.helloinnocv.fragmentdetailuser.FragmentDetailUserPresenter;
@@ -39,8 +43,9 @@ public class DetailActivityView extends BaseActivityView<DetailActivity,DetailAc
     public void onInitView() {
         super.onInitView();
         activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setHomeButtonEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         openFragment(R.id.container_detail,fragmentDetailUser);
         fragmentDetailUser.getPresenter().setListener(this);
 
@@ -48,7 +53,7 @@ public class DetailActivityView extends BaseActivityView<DetailActivity,DetailAc
 
     @Override
     protected DetailActivityView.Actions getDefaultListener() {
-        return DetailActivityView.Actions.DEFAULT;
+        return  DetailActivityView.Actions.DEFAULT;
     }
 
     public void showActionsToolbar() {
@@ -61,6 +66,7 @@ public class DetailActivityView extends BaseActivityView<DetailActivity,DetailAc
     }
 
     private MenuItem showDeleteAction(boolean value) {
+
         return toolbar.getMenu().findItem(R.id.delete_item).setVisible(value);
     }
 
@@ -82,18 +88,55 @@ public class DetailActivityView extends BaseActivityView<DetailActivity,DetailAc
 
     @Override
     public void onSavedUserDetail(UserDetail userDetail) {
-        showMessage("Is OLDER");
+        actions.onUpdatedUser(userDetail);
     }
 
     @Override
     public void onSavedNewUserDetail(UserDetail userDetail) {
-        showMessage("Is NEWEST");
+       actions.onPostNewUser(userDetail);
+    }
+
+    public void printData(UserDetail userDetail) {
+        fragmentDetailUser.getPresenter().setData(userDetail);
+    }
+
+    public void askDeleteItem() {
+        new MaterialDialog.Builder(activity)
+                .title(R.string.ask_delete)
+                .content(R.string.action_cant_undo)
+                .negativeText(R.string.cancel)
+                .positiveText(R.string.accept)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        actions.onDeleteItem();
+                    }
+                }).show();
     }
 
     public interface Actions extends ViewActions {
         Actions DEFAULT = new Actions() {
 
+            @Override
+            public void onPostNewUser(UserDetail userDetail) {
+
+            }
+
+            @Override
+            public void onUpdatedUser(UserDetail userDetail) {
+
+            }
+
+            @Override
+            public void onDeleteItem() {
+
+            }
         };
 
+        void onPostNewUser(UserDetail userDetail);
+
+        void onUpdatedUser(UserDetail userDetail);
+
+        void onDeleteItem();
     }
 }

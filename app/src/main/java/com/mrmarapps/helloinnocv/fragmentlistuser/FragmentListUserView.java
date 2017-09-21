@@ -18,11 +18,7 @@ import com.mrmarapps.helloinnocv.fragmentlistuser.viewmodel.UserItem;
 import com.mrmarapps.helloinnocv.mvp.ViewActions;
 import com.mrmarapps.helloinnocv.mvp.fragment.BaseMVPFragmentView;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -54,12 +50,6 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
         setupSwipeRefresh();
         setupFasItemAdapter();
 
-        ArrayList<UserItem> userItems = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-            userItems.add(new UserItem(10+i,"Hola User ==> 0"+i,format.format(new Date())));
-        }
-        setList(userItems);
 
 
     }
@@ -131,8 +121,7 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
 
 
     public void setList(List<UserItem> users){
-        getAdapter().add(users);
-
+        getAdapter().set(users);
     }
 
     private InnoCvAdapter<UserItem> getAdapter() {
@@ -177,6 +166,27 @@ public class FragmentListUserView extends BaseMVPFragmentView<FragmentListUser,F
     public void deleteItemSelected() {
         int positionSelected = getAdapter().getPositionSelected();
         getAdapter().remove(positionSelected);
+    }
+
+    public int getIdUserSelected() {
+        int positionSelected = getAdapter().getPositionSelected();
+
+        return getAdapter().getItem(positionSelected).getId();
+    }
+
+    public void updateUser(UserItem newUser, UserItem oldUserItem) {
+        int position = getPositionById(oldUserItem.getId());
+        getAdapter().set(position,newUser);
+    }
+
+    private int getPositionById(int id) {
+        List<UserItem> adapterItems = getAdapter().getAdapterItems();
+        for(UserItem item:adapterItems){
+            if(id== item.getId()){
+                return getAdapter().getPosition(item);
+            }
+        }
+        return -1;
     }
 
     public interface Actions extends ViewActions{

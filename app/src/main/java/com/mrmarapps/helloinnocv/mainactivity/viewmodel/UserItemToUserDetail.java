@@ -14,6 +14,6 @@ public class UserItemToUserDetail extends Mapper<UserItem, UserDetail> {
 
     @Override
     public UserItem reverseMap(UserDetail value) {
-        return null;
+        return new UserItem(value.getId(),value.getName(),value.getBirthDate());
     }
 }

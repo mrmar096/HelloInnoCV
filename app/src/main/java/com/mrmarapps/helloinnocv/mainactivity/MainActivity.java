@@ -37,6 +37,7 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> {
     @Override
     protected void onResume() {
         presenter.onResume();
+        super.onResume();
     }
 
     @Override

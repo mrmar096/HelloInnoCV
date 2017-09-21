@@ -8,12 +8,14 @@
         android:title="@string/delete_user"
         android:icon="@drawable/ic_delete_white_24dp"
         android:visible="true"
+        app:actionLayout="@layout/activity_detail"
         appcompat:showAsAction="ifRoom"/>
     <item
         android:id="@+id/undo_item"
         android:title="@string/undo_changes"
         android:icon="@drawable/ic_undo_white_24dp"
         android:visible="true"
+        app:actionLayout="@layout/activity_detail"
         appcompat:showAsAction="ifRoom"/>
 
 </menu>

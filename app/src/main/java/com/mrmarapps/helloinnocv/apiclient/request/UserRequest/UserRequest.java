@@ -12,6 +12,12 @@ public class UserRequest {
 
     private String birthdate;
 
+    public UserRequest(int id, String name, String birthDate) {
+        this.id=id;
+        this.name=name;
+        this.birthdate=birthDate;
+    }
+
 
     public int getId() {
         return id;

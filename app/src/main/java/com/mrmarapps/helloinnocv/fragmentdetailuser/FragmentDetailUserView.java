@@ -132,6 +132,8 @@ public class FragmentDetailUserView extends BaseMVPFragmentView<FragmentDetailUs
         showTextSelectElements();
     }
 
+
+
     public interface Actions extends ViewActions{
 
         void onSaved(String birthDate, String name);

@@ -6,6 +6,8 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.materialize.color.Material;
 import com.mrmarapps.helloinnocv.R;
 import com.mrmarapps.helloinnocv.di.activity.InjectedActivity;
 import com.mrmarapps.helloinnocv.fragmentdetailuser.viewmodel.UserDetail;
@@ -24,6 +26,7 @@ public abstract class BaseActivityView<ACTIVITY extends InjectedActivity,LISTENE
     protected LISTENER actions;
 
     private Unbinder unbinder;
+    private MaterialDialog loading;
 
     public BaseActivityView(ACTIVITY activity) {
         this.activity = activity;
@@ -87,5 +90,18 @@ public abstract class BaseActivityView<ACTIVITY extends InjectedActivity,LISTENE
     }
 
 
+    public  void hideLoading(){
+        if(loading!=null){
+            loading.dismiss();
+            loading=null;
+        }
+    }
 
+    public void showLoading() {
+        loading = new MaterialDialog.Builder(activity)
+                .content(R.string.loading)
+                .widgetColorRes(R.color.colorPrimary)
+                .progress(true, 0)
+                .show();
+    }
 }

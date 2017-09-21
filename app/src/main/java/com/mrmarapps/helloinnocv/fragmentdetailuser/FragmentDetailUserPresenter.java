@@ -1,5 +1,9 @@
 package com.mrmarapps.helloinnocv.fragmentdetailuser;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+
+import com.mrmarapps.helloinnocv.R;
 import com.mrmarapps.helloinnocv.fragmentdetailuser.viewmodel.UserDetail;
 import com.mrmarapps.helloinnocv.mvp.PresenterActions;
 import com.mrmarapps.helloinnocv.mvp.fragment.BaseMVPFragmentPresenter;
@@ -21,7 +25,7 @@ public class FragmentDetailUserPresenter extends BaseMVPFragmentPresenter<Fragme
     }
 
     public void setData(UserDetail model) {
-        this.userDetail =model;
+        this.userDetail = model;
         view.showDetailView();
         view.printUserDetail(model);
     }
@@ -48,7 +52,7 @@ public class FragmentDetailUserPresenter extends BaseMVPFragmentPresenter<Fragme
         if(this.userDetail==null){
             actions.onSavedNewUserDetail(userDetail);
         }else{
-            userDetail.setId(userDetail.getId());
+            userDetail.setId(this.userDetail.getId());
             actions.onSavedUserDetail(userDetail);
         }
 

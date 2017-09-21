@@ -3,6 +3,7 @@ package com.mrmarapps.helloinnocv.mvp.fragment;
 import android.view.View;
 
 import com.mrmarapps.helloinnocv.di.activity.InjectedActivity;
+import com.mrmarapps.helloinnocv.fragmentlistuser.viewmodel.UserItem;
 import com.mrmarapps.helloinnocv.mvp.PresenterActions;
 import com.mrmarapps.helloinnocv.mvp.ViewActions;
 
@@ -50,7 +51,7 @@ public abstract class BaseMVPFragmentPresenter<VIEW extends BaseMVPFragmentView,
         view.showErrorOcurred();
         
     }
-    
-    
-    
+
+
+
 }

@@ -14,4 +14,12 @@
     <string name="undo_changes">Deshacer Cambios</string>
     <string name="element_must_be_selected">No se seleccionó ningun elemento</string>
     <string name="end_point">http://hello-world.innocv.com/api/</string>
+    <string name="loading">Cargando...</string>
+    <string name="user_added">Usuario Añadido</string>
+    <string name="user_updated">Usuario Actualizado</string>
+    <string name="ask_delete">¿Desea Eliminar este Usuario?</string>
+    <string name="action_cant_undo">Esta acción no se puede deshacer</string>
+    <string name="cancel">Cancelar</string>
+    <string name="accept">Aceptar</string>
+    <string name="user_deleted">Usuario Eliminado</string>
 </resources>
