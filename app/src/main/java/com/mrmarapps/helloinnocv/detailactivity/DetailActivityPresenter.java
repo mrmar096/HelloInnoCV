@@ -1,7 +1,6 @@
 package com.mrmarapps.helloinnocv.detailactivity;
 
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.mrmarapps.helloinnocv.R;
@@ -9,10 +8,9 @@ import com.mrmarapps.helloinnocv.apiclient.apicalls.BaseModel;
 import com.mrmarapps.helloinnocv.apiclient.apicalls.InnocvApi;
 import com.mrmarapps.helloinnocv.apiclient.model.UserModel.UserModel;
 import com.mrmarapps.helloinnocv.apiclient.request.UserRequest.UserRequest;
-import com.mrmarapps.helloinnocv.detailactivity.mapper.UserDetailToUserRequest;
+import com.mrmarapps.helloinnocv.detailactivity.domain.mapper.UserDetailToUserRequest;
 import com.mrmarapps.helloinnocv.fragmentdetailuser.viewmodel.UserDetail;
 import com.mrmarapps.helloinnocv.fragmentdetailuser.viewmodel.mapper.UserModelToUserDetail;
-import com.mrmarapps.helloinnocv.fragmentlistuser.viewmodel.UserItem;
 import com.mrmarapps.helloinnocv.mvp.PresenterActions;
 import com.mrmarapps.helloinnocv.mvp.ViewActions;
 import com.mrmarapps.helloinnocv.mvp.activity.BaseActivityPresenter;

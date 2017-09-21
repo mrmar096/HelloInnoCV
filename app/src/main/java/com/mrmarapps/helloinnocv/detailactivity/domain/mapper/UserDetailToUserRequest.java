@@ -1,4 +1,4 @@
-package com.mrmarapps.helloinnocv.detailactivity.mapper;
+package com.mrmarapps.helloinnocv.detailactivity.domain.mapper;
 
 import com.mrmarapps.helloinnocv.apiclient.request.UserRequest.UserRequest;
 import com.mrmarapps.helloinnocv.data.Mapper;
