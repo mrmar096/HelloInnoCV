@@ -1,18 +1,16 @@
-package com.mrmarapps.helloinnocv.fragmentlistuser.viewmodel;
-
-import java.util.Date;
+package com.mrmarapps.helloinnocv.apiclient.request.UserRequest;
 
 /**
  * Created by mario on 14/09/17.
  */
 
-public class User{
+public class UserRequest {
 
     private int id;
 
     private String name;
 
-    private Date birthDate;
+    private String birthdate;
 
 
     public int getId() {
@@ -31,11 +29,11 @@ public class User{
         this.name = name;
     }
 
-    public Date getBirthDate() {
-        return birthDate;
+    public String getBirthDate() {
+        return birthdate;
     }
 
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+    public void setBirthDate(String birthDate) {
+        this.birthdate = birthDate;
     }
 }

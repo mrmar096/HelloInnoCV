@@ -4,6 +4,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mrmarapps.helloinnocv.R;
+import com.mrmarapps.helloinnocv.di.ApiModule;
 import com.mrmarapps.helloinnocv.mvp.activity.BaseActivity;
 
 /**
@@ -18,6 +19,7 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> {
         DaggerMainActivityComponent.builder()
                 .injectedApplicationComponent(getApplicationComponent())
                 .mainActivityModule(new MainActivityModule(this))
+                .apiModule(new ApiModule(this))
                 .build().inject(this);
 
     }
@@ -30,6 +32,11 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return presenter.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        presenter.onResume();
     }
 
     @Override

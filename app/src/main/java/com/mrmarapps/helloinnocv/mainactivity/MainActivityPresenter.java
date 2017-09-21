@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +14,8 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.mrmarapps.helloinnocv.R;
+import com.mrmarapps.helloinnocv.apiclient.apicalls.InnocvApi;
+import com.mrmarapps.helloinnocv.apiclient.model.UserModel.UserModel;
 import com.mrmarapps.helloinnocv.detailactivity.DetailActivity;
 import com.mrmarapps.helloinnocv.fragmentdetailuser.FragmentDetailUser;
 import com.mrmarapps.helloinnocv.fragmentdetailuser.FragmentDetailUserPresenter;
@@ -25,7 +28,15 @@ import com.mrmarapps.helloinnocv.mvp.PresenterActions;
 import com.mrmarapps.helloinnocv.mvp.ViewActions;
 import com.mrmarapps.helloinnocv.mvp.activity.BaseActivityPresenter;
 
+import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+
 import javax.inject.Inject;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by mario on 12/09/17.
@@ -34,10 +45,12 @@ import javax.inject.Inject;
 public class MainActivityPresenter extends BaseActivityPresenter<MainActivityView,MainActivity,MainActivityPresenter.Actions> implements MainActivityView.Actions, SearchView.OnQueryTextListener {
 
 
+    private final InnocvApi innocvApi;
 
     @Inject
-    public MainActivityPresenter(MainActivityView view, MainActivity activity) {
+    public MainActivityPresenter(InnocvApi innocvApi,MainActivityView view, MainActivity activity) {
         super(view, activity);
+        this.innocvApi = innocvApi;
     }
 
     @Override
@@ -106,6 +119,32 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityVie
     @Override
     public void onGoToDetail(int id) {
         DetailActivity.launch(activity,id);
+    }
+
+    public void onResume() {
+        getAllUsers();
+    }
+
+    private void getAllUsers() {
+        Observable<List<UserModel>> users = innocvApi.getUsers();
+        users.subscribeOn(Schedulers.io());
+        users.observeOn(AndroidSchedulers.mainThread());
+        users.subscribe(new Subscriber<List<UserModel>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(List<UserModel> userModels) {
+                view.showMessage("Lista cargada "+userModels);
+            }
+        });
     }
 
     public interface Actions extends PresenterActions {

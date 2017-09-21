@@ -2,6 +2,7 @@ package com.mrmarapps.helloinnocv.mainactivity;
 
 import android.support.v7.app.AppCompatActivity;
 
+import com.mrmarapps.helloinnocv.di.ApiModule;
 import com.mrmarapps.helloinnocv.di.activity.InjectedActivity;
 import com.mrmarapps.helloinnocv.di.activity.InjectedActivityModule;
 import com.mrmarapps.helloinnocv.di.activity.PerActivity;
@@ -16,7 +17,10 @@ import dagger.Component;
 
 @PerActivity
 @Component( dependencies = InjectedApplicationComponent.class,
-            modules = MainActivityModule.class
+            modules = {
+                    MainActivityModule.class,
+                    ApiModule.class
+            }
 )
 public interface MainActivityComponent {
 
