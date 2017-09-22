@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HelloInnoCV</string>
+    <string name="accept">Accept</string>
+    <string name="action_cant_undo">Action can not undo</string>
+    <string name="action_selecall">Select All</string>
+    <string name="ask_delete">Do you want to remove this user?</string>
+    <string name="btn_save">SAVE</string>
+    <string name="cancel">Cancel</string>
+    <string name="contact">contact</string>
+    <string name="delete_user">Remove User</string>
+    <string name="element_must_be_selected">Element must be selected</string>
+    <string name="end_point">http://hello-world.innocv.com/api/</string>
+    <string name="error_conection">Error connection</string>
+    <string name="error_ocurred">An strange error ocurred</string>
+    <string name="hint_birth_date">Introduce your birthdate</string>
+    <string name="hint_name">Introduce your name</string>
+    <string name="loading">Loading...</string>
+    <string name="menu_search">Search...</string>
+    <string name="search_hint">User\'s Search</string>
+    <string name="title_activity_test"></string>
+    <string name="undo_changes">Undo Changes</string>
+    <string name="user_added">User Added</string>
+    <string name="user_deleted">User Deleted</string>
+    <string name="user_updated">User Updated</string>
+</resources>

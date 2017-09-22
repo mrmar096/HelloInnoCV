@@ -55,6 +55,7 @@ public class DetailActivityPresenter extends BaseActivityPresenter<DetailActivit
         switch (item.getItemId()){
             case android.R.id.home:
                 onBackPressed();
+                break;
             case R.id.delete_item:
                 view.askDeleteItem();
                 break;

@@ -2,6 +2,7 @@ package com.mrmarapps.helloinnocv.fragmentdetailuser;
 
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 
 import com.mrmarapps.helloinnocv.R;
 import com.mrmarapps.helloinnocv.fragmentdetailuser.viewmodel.UserDetail;
@@ -22,6 +23,12 @@ public class FragmentDetailUserPresenter extends BaseMVPFragmentPresenter<Fragme
     @Inject
     public FragmentDetailUserPresenter(FragmentDetailUserView view, FragmentDetailUser fragment) {
         super(view, fragment);
+    }
+
+    @Override
+    public void onViewCreated(View view) {
+        super.onViewCreated(view);
+        showEmptyDetail();
     }
 
     public void setData(UserDetail model) {
