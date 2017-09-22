@@ -54,22 +54,6 @@ public class MainActivityPresenterTest {
     }
 
 
-    /**TEST WITH RXJAVA NOT WORK, I DON'T KNOW WHY
-     *  Observable<BaseModel> removeObservable = innocvApi.removeUser(String.valueOf(id));
-     removeObservable.subscribe();
-     TestSubscriber<BaseModel> testSubscriber = new TestSubscriber<>();
-
-     removeObservable.subscribe(testSubscriber);
-
-     testSubscriber.assertError(any(Throwable.class));
-
-
-     /* Action1<BaseModel> success = mock(Action1.class);
-     Action1 failure = mock(Action1.class);
-
-     innocvApi.removeUser(String.valueOf(id)).subscribe(success, failure);
-     verify(success,never()).call(any(BaseModel.class));
-     verify(failure).call(any(Throwable.class));  */
     @Test
     public void onPostNewUser() throws Exception {
 
