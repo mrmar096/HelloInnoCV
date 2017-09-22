@@ -25,6 +25,10 @@ public class UserDetail {
         this.birthDate=birthDate;
     }
 
+    public UserDetail() {
+
+    }
+
     public int getId() {
         return id;
     }

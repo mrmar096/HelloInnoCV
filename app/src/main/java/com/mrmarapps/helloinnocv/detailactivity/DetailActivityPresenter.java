@@ -189,10 +189,18 @@ public class DetailActivityPresenter extends BaseActivityPresenter<DetailActivit
     }
 
     public void onCreateOptionsMenu(Menu menu) {
-        if(idUser==-1){
+        if (getIdUser() == -1) {
             menu.findItem(R.id.delete_item).setVisible(false);
             menu.findItem(R.id.undo_item).setVisible(false);
         }
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     public interface Actions extends PresenterActions {
